@@ -1,11 +1,11 @@
-import contactsService from "../services/contactsServices.js";
-import {
+const contactsService = require("../services/contactsServices.js");
+const {
   createContactSchema,
   updateContactSchema,
-} from "../schemas/contactsSchemas.js";
-import { json } from "express";
+} = require("../schemas/contactsSchemas.js");
+const json = require("express");
 
-export const getAllContacts = async (req, res) => {
+const getAllContacts = async (req, res) => {
   try {
     const contacts = await contactsService.listContacts();
     res.status(200).json(contacts);
@@ -14,7 +14,7 @@ export const getAllContacts = async (req, res) => {
   }
 };
 
-export const getOneContact = async (req, res) => {
+const getOneContact = async (req, res) => {
   try {
     const oneContact = await contactsService.getContactById(req.params.id);
     if (oneContact) {
@@ -27,7 +27,7 @@ export const getOneContact = async (req, res) => {
   }
 };
 
-export const deleteContact = async (req, res) => {
+const deleteContact = async (req, res) => {
   try {
     const deletedContact = await contactsService.removeContact(req.params.id);
     if (deleteContact) {
@@ -40,7 +40,7 @@ export const deleteContact = async (req, res) => {
   }
 };
 
-export const createContact = async (req, res) => {
+const createContact = async (req, res) => {
   try {
     const validateContact = createContactSchema.validate(req.body);
 
@@ -55,7 +55,7 @@ export const createContact = async (req, res) => {
   }
 };
 
-export const updateContact = async (req, res) => {
+const updateContact = async (req, res) => {
   try {
     const contactId = req.params.id;
     const updatedData = req.body;
@@ -74,4 +74,12 @@ export const updateContact = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports = {
+  getAllContacts,
+  getOneContact,
+  deleteContact,
+  createContact,
+  updateContact,
 };
