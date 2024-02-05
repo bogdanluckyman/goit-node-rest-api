@@ -30,8 +30,8 @@ const getOneContact = async (req, res) => {
 const deleteContact = async (req, res) => {
   try {
     const deletedContact = await contactsService.removeContact(req.params.id);
-    if (deleteContact) {
-      res.status(200).json(deleteContact);
+    if (deletedContact) {
+      res.status(200).json(deletedContact);
     } else {
       res.status(404).json({ message: "Not found" });
     }
@@ -40,7 +40,7 @@ const deleteContact = async (req, res) => {
   }
 };
 
-const createContact = async (req, res) => {
+const createContact = async (req, res, next) => {
   try {
     const validateContact = createContactSchema.validate(req.body);
 
@@ -51,7 +51,7 @@ const createContact = async (req, res) => {
     const newContact = await contactsService.addContact(name, email, phone);
     res.status(201).json(newContact);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
