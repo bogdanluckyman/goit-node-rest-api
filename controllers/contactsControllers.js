@@ -4,11 +4,12 @@ const {
   updateContactSchema,
 } = require("../schemas/contactsSchemas.js");
 const json = require("express");
+const Contact = require("../model/contacts.js");
 
 const getAllContacts = async (req, res) => {
   try {
-    const contacts = await contactsService.listContacts();
-    res.status(200).json(contacts);
+    const result = await Contact.find();
+    res.json(result);
   } catch (error) {
     console.log(error);
   }
@@ -16,9 +17,10 @@ const getAllContacts = async (req, res) => {
 
 const getOneContact = async (req, res) => {
   try {
-    const oneContact = await contactsService.getContactById(req.params.id);
-    if (oneContact) {
-      res.status(200).json(oneContact);
+    const { id } = req.params;
+    const result = await Contact.findById(id);
+    if (result) {
+      res.status(200).json(result);
     } else {
       res.status(404).json({ message: "Not found" });
     }
@@ -29,7 +31,7 @@ const getOneContact = async (req, res) => {
 
 const deleteContact = async (req, res) => {
   try {
-    const deletedContact = await contactsService.removeContact(req.params.id);
+    const deletedContact = await Contact.findByIdAndDelete(id);
     if (deletedContact) {
       res.status(200).json(deletedContact);
     } else {
@@ -42,14 +44,8 @@ const deleteContact = async (req, res) => {
 
 const createContact = async (req, res, next) => {
   try {
-    const validateContact = createContactSchema.validate(req.body);
-
-    if (validateContact.error) {
-      return res.status(400).json({ message: validateContact.error.message });
-    }
-    const { name, email, phone } = req.body;
-    const newContact = await contactsService.addContact(name, email, phone);
-    res.status(201).json(newContact);
+    const result = await Book.create(req.body);
+    res.status(201).json(result);
   } catch (error) {
     next(error);
   }
