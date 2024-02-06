@@ -45,7 +45,7 @@ const createContact = async (req, res, next) => {
     const validateContact = createContactSchema.validate(req.body);
 
     if (validateContact.error) {
-      return res.status(400).json({ message: validationResult.error.message });
+      return res.status(400).json({ message: validateContact.error.message });
     }
     const { name, email, phone } = req.body;
     const newContact = await contactsService.addContact(name, email, phone);
@@ -59,9 +59,16 @@ const updateContact = async (req, res) => {
   try {
     const contactId = req.params.id;
     const updatedData = req.body;
+
+    if (Object.keys(updatedData).length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Body must have at least one field" });
+    }
+
     const validatedContacts = updateContactSchema.validate(updatedData);
     if (validatedContacts.error) {
-      return res.status(400).json({ message: validationResult.error.message });
+      return res.status(400).json({ message: validatedContacts.error.message });
     }
     const updateContact = await contactsService.updateContacts(
       contactId,
