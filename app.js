@@ -1,6 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const mongoose = require("mongoose");
+
+const DB_Host =
+  "mongodb+srv://bohdanluckyman:o4A9pcJKepCAVThT@cluster0.716bbg4.mongodb.net/db-contacts";
 
 const contactsRouter = require("./routes/contactsRouter.js");
 
@@ -21,6 +25,15 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-app.listen(3000, () => {
-  console.log("Server is running. Use our API on port: 3000");
-});
+mongoose
+  .connect(DB_Host)
+  .then(() => console.log("Database connection successful"))
+  .then(
+    app.listen(3000, () => {
+      console.log("Server is running. Use our API on port: 3000");
+    })
+  )
+  .catch((error) => {
+    console.error("Database connection error:", error);
+    process.exit(1);
+  });
