@@ -7,6 +7,7 @@ const DB_Host =
   "mongodb+srv://bohdanluckyman:o4A9pcJKepCAVThT@cluster0.716bbg4.mongodb.net/db-contacts";
 
 const contactsRouter = require("./routes/contactsRouter.js");
+const usersRouter = require("./routes/authRouter.js");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/contacts", contactsRouter);
+app.use("/api/users", usersRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
