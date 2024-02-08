@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken"); // Додано імпорт бібліотеки jsonwebtoken
+const jwt = require("jsonwebtoken");
 const User = require("../model/users");
 const { registrationSchema } = require("../schemas/userSchemas");
 require("dotenv").config();
