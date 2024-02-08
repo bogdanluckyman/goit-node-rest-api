@@ -4,6 +4,7 @@ const {
 } = require("../schemas/contactsSchemas.js");
 const json = require("express");
 const Contact = require("../model/contacts.js");
+const mongoose = require("mongoose");
 
 const getAllContacts = async (req, res, next) => {
   try {
@@ -109,9 +110,9 @@ const updateContact = async (req, res, next) => {
 
 const updateStatusContact = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
+    const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(contactId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid contact ID" });
     }
 
@@ -124,7 +125,7 @@ const updateStatusContact = async (req, res, next) => {
     }
 
     const updatedContact = await Contact.findByIdAndUpdate(
-      contactId,
+      id,
       { favorite },
       { new: true }
     );
