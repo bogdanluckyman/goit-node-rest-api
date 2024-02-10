@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../model/users");
-const { registrationSchema } = require("../schemas/userSchemas");
+const User = require("../../model/users");
+const { registrationSchema } = require("../../schemas/userSchemas");
 require("dotenv").config();
 
 const registration = async (req, res, next) => {
@@ -27,17 +26,8 @@ const registration = async (req, res, next) => {
 
     await newUser.save();
 
-    const secretKey = process.env.JWT_SECRET_KEY;
-
-    const payload = {
-      userId: newUser._id,
-      email: newUser.email,
-    };
-
-    const token = jwt.sign(payload, secretKey, { expiresIn: "1h" });
-
     res.status(201).json({
-      token,
+      message: "User registered successfully",
       user: {
         email: newUser.email,
         subscription: newUser.subscription,

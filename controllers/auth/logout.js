@@ -5,7 +5,7 @@ const logoutUser = async (req, res) => {
     await user.save();
     res.status(204).end();
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(401).json({ message: "Not authorized" });
   }
 };
 

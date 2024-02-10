@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../model/users");
-const { loginSchema } = require("../schemas/userSchemas");
+const User = require("../../model/users");
+const { loginSchema } = require("../../schemas/userSchemas");
 require("dotenv").config();
 
 const login = async (req, res, next) => {
@@ -32,6 +32,9 @@ const login = async (req, res, next) => {
     const token = jwt.sign({ userId: user._id }, secretKey, {
       expiresIn: "1h",
     });
+
+    user.token = token;
+    await user.save();
 
     res.status(200).json({
       token,

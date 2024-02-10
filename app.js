@@ -1,10 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const DB_Host =
-  "mongodb+srv://bohdanluckyman:o4A9pcJKepCAVThT@cluster0.716bbg4.mongodb.net/db-contacts";
+const DB_Host = process.env.DB_Host;
 
 const contactsRouter = require("./routes/contactsRouter.js");
 const usersRouter = require("./routes/authRouter.js");
