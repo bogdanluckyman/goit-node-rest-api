@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../../model/users");
 const { registrationSchema } = require("../../schemas/userSchemas");
+const gravatar = require("gravatar");
 require("dotenv").config();
 
 const registration = async (req, res, next) => {
@@ -22,6 +23,11 @@ const registration = async (req, res, next) => {
     const newUser = new User({
       email: req.body.email,
       password: hashedPassword,
+      avatarURL: gravatar.url(req.body.email, {
+        s: "100",
+        r: "x",
+        d: "retro",
+      }),
     });
 
     await newUser.save();
@@ -31,11 +37,12 @@ const registration = async (req, res, next) => {
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 

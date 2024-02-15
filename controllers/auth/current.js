@@ -1,4 +1,4 @@
-const currentUser = async (req, res) => {
+const currentUser = async (req, res, next) => {
   try {
     const user = req.user;
     res.status(200).json({
@@ -6,7 +6,7 @@ const currentUser = async (req, res) => {
       subscription: user.subscription,
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 

@@ -1,11 +1,11 @@
-const logoutUser = async (req, res) => {
+const logoutUser = async (req, res, next) => {
   try {
     const user = req.user;
     user.token = null;
     await user.save();
     res.status(204).end();
   } catch (error) {
-    res.status(401).json({ message: "Not authorized" });
+    next(error);
   }
 };
 
