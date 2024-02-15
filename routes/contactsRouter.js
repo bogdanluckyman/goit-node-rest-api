@@ -7,6 +7,7 @@ const {
   updateContact,
   updateStatusContact,
 } = require("../controllers/contactsControllers.js");
+const verifyToken = require("../middleware/middle.js");
 
 const contactsRouter = express.Router();
 
@@ -20,6 +21,6 @@ contactsRouter.post("/", createContact);
 
 contactsRouter.put("/:id", updateContact);
 
-contactsRouter.patch("/:id/favorite", updateStatusContact);
+contactsRouter.patch("/:id/favorite", verifyToken, updateStatusContact);
 
 module.exports = contactsRouter;

@@ -2,7 +2,7 @@ const path = require("path");
 const jimp = require("jimp");
 const fs = require("fs").promises;
 
-const updateAvatar = async (req, res) => {
+const updateAvatar = async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
@@ -24,7 +24,7 @@ const updateAvatar = async (req, res) => {
     res.status(200).json({ avatarURL: req.user.avatarURL });
   } catch (error) {
     console.error("Avatar update error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
