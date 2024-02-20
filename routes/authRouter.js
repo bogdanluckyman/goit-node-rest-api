@@ -23,6 +23,6 @@ usersRouter.patch(
   updateAvatar
 );
 usersRouter.get("/verify/:verificationToken", verifyUser);
-usersRouter.post("/verify", resendVerificationEmail); // Додано новий маршрут для повторної відправки електронної пошти для підтвердження
+usersRouter.post("/verify", resendVerificationEmail);
 
 module.exports = usersRouter;

@@ -20,7 +20,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
       to: email,
       subject: "Verification Email",
       html: `<p>Привіт. Будь ласка, перейдіть за посиланням нижче, щоб підтвердити свою електронну адресу:</p>
-             <a href="http://yourwebsite.com/users/verify/${verificationToken}">Підтвердити електронну адресу</a>`,
+             <a href="http://localhost:3000/users/verify/${verificationToken}">Підтвердити електронну адресу</a>`,
     };
 
     await transporter.sendMail(emailOptions);
