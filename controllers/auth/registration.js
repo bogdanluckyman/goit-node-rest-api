@@ -3,6 +3,8 @@ const User = require("../../model/users");
 const { registrationSchema } = require("../../schemas/userSchemas");
 const gravatar = require("gravatar");
 require("dotenv").config();
+const uuid = require("uuid");
+const sendVerificationEmail = require("../../config");
 
 const registration = async (req, res, next) => {
   try {
@@ -19,6 +21,7 @@ const registration = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const verificationToken = uuid.v4();
 
     const newUser = new User({
       email: req.body.email,
@@ -28,9 +31,12 @@ const registration = async (req, res, next) => {
         r: "x",
         d: "retro",
       }),
+      verificationToken: verificationToken,
     });
 
     await newUser.save();
+
+    await sendVerificationEmail(newUser.email, verificationToken);
 
     res.status(201).json({
       message: "User registered successfully",
