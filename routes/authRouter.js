@@ -6,6 +6,8 @@ const logoutUser = require("../controllers/auth/logout");
 const currentUser = require("../controllers/auth/current");
 const multer = require("multer");
 const updateAvatar = require("../controllers/auth/updateAvatar");
+const verifyUser = require("../controllers/auth/verify");
+const resendVerificationEmail = require("../controllers/auth/verify");
 
 const usersRouter = express.Router();
 const upload = multer({ dest: "tmp/" });
@@ -20,5 +22,7 @@ usersRouter.patch(
   upload.single("avatar"),
   updateAvatar
 );
+usersRouter.get("/verify/:verificationToken", verifyUser);
+usersRouter.post("/verify", resendVerificationEmail); // Додано новий маршрут для повторної відправки електронної пошти для підтвердження
 
 module.exports = usersRouter;
