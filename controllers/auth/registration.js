@@ -32,6 +32,7 @@ const registration = async (req, res, next) => {
         d: "retro",
       }),
       verificationToken: verificationToken,
+      verify: false,
     });
 
     await newUser.save();
@@ -44,6 +45,7 @@ const registration = async (req, res, next) => {
         email: newUser.email,
         subscription: newUser.subscription,
         avatarURL: newUser.avatarURL,
+        verificationToken: verificationToken,
       },
     });
   } catch (error) {

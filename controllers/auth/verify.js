@@ -1,33 +1,32 @@
 const User = require("../../model/users");
-const sendVerificationEmail = require("../../config");
 
-const resendVerificationEmail = async (req, res) => {
+const verifyEmail = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { verificationToken } = req.params;
 
-    if (!email) {
-      return res.status(400).json({ message: "missing required field email" });
+    if (!verificationToken) {
+      return res.status(400).json({ message: "Missing verification token" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ verificationToken });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     if (user.verify) {
-      return res
-        .status(400)
-        .json({ message: "Verification has already been passed" });
+      return res.status(400).json({ message: "Email already verified" });
     }
 
-    await sendVerificationEmail(email, user.verificationToken);
+    user.verificationToken = null;
+    user.verify = true;
+    await user.save();
 
-    return res.status(200).json({ message: "Verification email sent" });
+    return res.status(200).json({ message: "Email verification successful" });
   } catch (error) {
-    console.error("Error resending verification email:", error);
+    console.error("Error verifying email:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-module.exports = resendVerificationEmail;
+module.exports = verifyEmail;
