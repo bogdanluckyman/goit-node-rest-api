@@ -1,7 +1,7 @@
 const sendVerificationEmail = require("../../config");
 const User = require("../../model/users");
 
-const resendVerificationEmail = async (req, res) => {
+const resendVerificationEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
 
@@ -26,7 +26,7 @@ const resendVerificationEmail = async (req, res) => {
     return res.status(200).json({ message: "Verification email sent" });
   } catch (error) {
     console.error("Error resending verification email:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 };
 

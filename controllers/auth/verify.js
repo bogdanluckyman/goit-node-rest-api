@@ -1,6 +1,6 @@
 const User = require("../../model/users");
 
-const verifyEmail = async (req, res) => {
+const verifyEmail = async (req, res, next) => {
   try {
     const { verificationToken } = req.params;
 
@@ -29,7 +29,7 @@ const verifyEmail = async (req, res) => {
     return res.status(200).json({ message: "Email verification successful" });
   } catch (error) {
     console.error("Error verifying email:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 };
 
