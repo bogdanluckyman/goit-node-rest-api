@@ -8,6 +8,7 @@ const multer = require("multer");
 const updateAvatar = require("../controllers/auth/updateAvatar");
 const verifyUser = require("../controllers/auth/verify");
 const sendVerificationEmail = require("../config");
+const resendVerificationEmail = require("../controllers/auth/sendVerify");
 
 const usersRouter = express.Router();
 const upload = multer({ dest: "tmp/" });
@@ -23,6 +24,6 @@ usersRouter.patch(
   updateAvatar
 );
 usersRouter.get("/verify/:verificationToken", verifyUser);
-usersRouter.post("/verify", sendVerificationEmail);
+usersRouter.post("/verify", resendVerificationEmail);
 
 module.exports = usersRouter;
